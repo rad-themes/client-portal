@@ -1,6 +1,6 @@
 # Client Portal for Statamic
 
-Give every client a private, branded portal: project status and progress, phases, files, uploads, embeds, content pages, approvals, reminders and activity emails.
+Give every client a private, branded portal: project status and progress, phases, files, uploads, galleries, embeds, content pages, approvals, messages, reminders and activity emails.
 
 ## Requirements
 
@@ -38,9 +38,10 @@ Clients only see portals they're assigned to. Super users, and roles with the **
 | Module | What the client sees |
 |---|---|
 | Link | A button to any URL |
-| File download | Files from the private container. They're only downloadable through the portal, after an access check. |
-| Client upload | An upload form. Files are stored privately and listed on the module in the Control Panel. |
+| File download | Files from the private container, served only through the portal after an access check. PDFs, images, video, audio and text files get a **View** link that opens them in the browser. |
+| Client upload | An upload form. Files are stored privately under `uploads/` in the **Portal Files** container and listed on the module in the portal. |
 | Content page | A page of rich content, with sidebar navigation between pages |
+| Image gallery | A swipeable row of images from your `assets` container |
 | Embed | An embedded Figma, Loom, YouTube, Google Docs, Google Calendar or Typeform URL, etc. |
 
 Every module has:
@@ -48,6 +49,20 @@ Every module has:
 - **Status:** *Active*, *Inactive* (shown as locked and can't be opened) or *Complete*. The portal's progress bar is the share of non-inactive modules that are complete.
 - **Due date:** shown on the card; clients get a reminder email before it.
 - **Client can mark complete:** adds a button (e.g. "Approve designs") that marks the module complete and notifies you.
+
+If an editor has a portal open while a client completes a module, saving the editor won't undo the client's completion. An editor who opens the portal afterwards can still set the module back to Active.
+
+### Messages
+
+Turn on **Messages** in a portal's sidebar to add a message thread to it. When a client writes, you get an activity email; when your team writes, the portal's clients get an email.
+
+### Per-portal notifications
+
+A portal's sidebar can:
+
+- send its activity emails to different people (e.g. the project manager)
+- mute its activity emails
+- turn off its due date reminders
 
 ### Templates
 
@@ -63,6 +78,7 @@ Turn on **Template** in an entry's sidebar to make it a template. Templates are 
 - **Branding:** portal name, logo, brand colour, login heading and intro, custom CSS
 - **Clients:**
   - *Let clients register themselves* adds a sign-up page at `/portal/register`. New sign-ups get the client role, and their own copy of a template if you choose one.
+  - A registration captcha: reCAPTCHA v2 or Cloudflare Turnstile, using your site and secret keys.
   - Maximum upload size.
 - **Notifications:**
   - Email about client activity (completions, uploads): off, instantly, or as a daily digest.
@@ -87,6 +103,14 @@ php please client-portal:import portal.json --slug=acme-website-copy
 
 Exports leave out clients and client uploads. Imported portals are created unpublished.
 
+## Translations
+
+Every string goes through Laravel's translator. To translate the portal, copy the addon's `lang/en.json` to your site's `lang/{locale}.json` (e.g. `lang/de.json`) and translate the values.
+
+## Multisite and content drivers
+
+Portals live in your default site. Localizations share the origin's clients and modules, so each portal appears once. The addon only uses standard queries, so it works with flat files or the Eloquent driver. Uploads and completion logs are stored on the `client_portal` disk. On multi-server setups, point that disk at shared storage such as S3 by defining `client_portal` in `config/filesystems.php`.
+
 ## Customising
 
 - **Colour:** use the Brand colour setting, or set `--portal-brand` in custom CSS.
@@ -98,7 +122,8 @@ Exports leave out clients and client uploads. Imported portals are created unpub
 - Every portal page, download, upload and completion checks that the user is assigned to the portal.
 - Portal files live outside the web root and are only served through the access check.
 - Client uploads are limited by type (documents, images, audio/video, design files and archives, but no HTML, SVG or scripts) and by size.
-- Portals send `noindex`. If you use static caching, exclude `/portal*` from it.
+- Portals send `noindex`, and downloads send `Cache-Control: private, no-store`. Portal routes never go through Statamic's static cache.
+- Message text is escaped. Uploads are renamed and stored under unguessable folder names.
 
 ## Development
 

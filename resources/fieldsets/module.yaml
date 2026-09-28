@@ -46,3 +46,11 @@ fields:
       width: 50
       if:
         client_can_complete: 'equals true'
+  -
+    handle: completed_at
+    field:
+      type: hidden
+  -
+    handle: completed_by
+    field:
+      type: hidden

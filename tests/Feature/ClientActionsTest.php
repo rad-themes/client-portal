@@ -105,14 +105,17 @@ class ClientActionsTest extends TestCase
             ]])
             ->assertRedirect(route('client-portal.show', 'acme'));
 
-        $uploads = $this->module('acme', 'upload-1')['uploads'];
+        $portal = Portals::findBySlug('acme');
+        $uploads = Portals::uploads($portal, 'upload-1');
         $this->assertCount(2, $uploads);
-        $this->assertStringStartsWith('uploads/acme/', $uploads[0]);
-        $this->assertStringEndsWith('-brand-guide.pdf', $uploads[0]);
-        Storage::disk(Portals::FILES_DISK)->assertExists($uploads);
+        $this->assertSame(['brand-guide.pdf', 'logo.png'], collect($uploads)->map(fn ($path) => basename($path))->sort()->values()->all());
+        $this->assertStringStartsWith("uploads/{$portal->id()}/upload-1/", reset($uploads));
 
-        $this->actingAs($client)->get('/portal/acme/upload-1/files/1')->assertOk();
-        $this->actingAs($client)->get('/portal/acme')->assertSee('-brand-guide.pdf')->assertSee('/portal/acme/upload-1/files/1');
+        $key = array_key_first($uploads);
+        $this->actingAs($client)->get("/portal/acme/upload-1/uploads/{$key}")->assertOk()->assertDownload();
+        $this->actingAs($client)->get('/portal/acme')->assertSee('brand-guide.pdf')->assertSee("/portal/acme/upload-1/uploads/{$key}");
+        $this->actingAs($this->makeUser('stranger@example.com'))->get("/portal/acme/upload-1/uploads/{$key}")->assertForbidden();
+        $this->actingAs($client)->get('/portal/acme/upload-1/uploads/nope')->assertNotFound();
 
         Notification::assertSentOnDemand(ClientActivity::class, fn ($notification, $channels, $notifiable) => $notifiable->routes['mail'] === ['team@agency.test']);
     }
@@ -136,7 +139,7 @@ class ClientActionsTest extends TestCase
             ->post('/portal/acme/upload-1/upload', ['files' => [UploadedFile::fake()->create('huge.pdf', 2048)]])
             ->assertSessionHasErrors('files.0');
 
-        $this->assertArrayNotHasKey('uploads', $this->module('acme', 'upload-1'));
+        $this->assertSame([], Portals::uploads(Portals::findBySlug('acme'), 'upload-1'));
     }
 
     #[Test]

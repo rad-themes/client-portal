@@ -1,5 +1,5 @@
 {{ partial src="client-portal::card" }}
-    {{ partial src="client-portal::file-list" :items="uploads" }}
+    {{ partial src="client-portal::file-list" }}
 
     <form method="POST" enctype="multipart/form-data" class="space-y-2"
         action="{{ route name="client-portal.upload" portal="{portal_slug}" module="{module_ref}" }}">

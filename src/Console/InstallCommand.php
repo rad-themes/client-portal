@@ -59,7 +59,7 @@ class InstallCommand extends Command
             $this->components->info('Created the [client] role.');
         }
 
-        if (! $this->option('no-example') && ! Entry::query()->where('collection', Portals::COLLECTION)->exists()) {
+        if (! $this->option('no-example') && Portals::query()->count() === 0) {
             Entry::make()
                 ->collection(Portals::COLLECTION)
                 ->slug('website-project-template')

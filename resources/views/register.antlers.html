@@ -13,6 +13,14 @@
         {{ partial src="client-portal::input" name="password" type="password" label="Password" autocomplete="new-password" }}
         {{ partial src="client-portal::input" name="password_confirmation" type="password" label="Confirm password" autocomplete="new-password" }}
 
+        {{ if portal_brand:captcha == 'recaptcha' }}
+            <div class="g-recaptcha" data-sitekey="{{ portal_brand:captcha_site_key | sanitize }}"></div>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        {{ elseif portal_brand:captcha == 'turnstile' }}
+            <div class="cf-turnstile" data-sitekey="{{ portal_brand:captcha_site_key | sanitize }}"></div>
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        {{ /if }}
+
         <button type="submit" class="w-full rounded-lg bg-brand px-4 py-2.5 font-medium text-white hover:bg-brand/90">{{ trans key="Create account" }}</button>
     {{ /user:register_form }}
 

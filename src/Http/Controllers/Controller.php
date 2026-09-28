@@ -18,7 +18,7 @@ abstract class Controller
     }
 
     /**
-     * @return array{name: string, logo: ?string, color: ?string, custom_css: ?string, login_heading: ?string, login_intro: ?string, allow_registration: bool}
+     * @return array{name: string, logo: ?string, color: ?string, custom_css: ?string, login_heading: ?string, login_intro: ?string, allow_registration: bool, captcha: ?string, captcha_site_key: ?string}
      */
     private function branding(): array
     {
@@ -32,6 +32,8 @@ abstract class Controller
             'login_heading' => Portals::setting('login_heading'),
             'login_intro' => Portals::setting('login_intro'),
             'allow_registration' => (bool) Portals::setting('allow_registration'),
+            'captcha' => Portals::setting('captcha_site_key') && Portals::setting('captcha_secret_key') ? Portals::setting('captcha_provider') : null,
+            'captcha_site_key' => Portals::setting('captcha_site_key'),
         ];
     }
 

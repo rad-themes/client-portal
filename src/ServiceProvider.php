@@ -11,9 +11,14 @@ use Komalnakrani\ClientPortal\Console\ImportCommand;
 use Komalnakrani\ClientPortal\Console\InstallCommand;
 use Komalnakrani\ClientPortal\Console\SendDigestCommand;
 use Komalnakrani\ClientPortal\Console\SendRemindersCommand;
+use Komalnakrani\ClientPortal\Listeners\PreserveClientProgress;
 use Komalnakrani\ClientPortal\Listeners\SetUpRegisteredClient;
+use Komalnakrani\ClientPortal\Listeners\VerifyCaptcha;
+use Komalnakrani\ClientPortal\Tags\ClientPortal;
 use Statamic\Contracts\Entries\Entry;
+use Statamic\Events\EntrySaving;
 use Statamic\Events\UserRegistered;
+use Statamic\Events\UserRegistering;
 use Statamic\Facades\User;
 use Statamic\Providers\AddonServiceProvider;
 
@@ -35,7 +40,13 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
+        EntrySaving::class => [PreserveClientProgress::class],
+        UserRegistering::class => [VerifyCaptcha::class],
         UserRegistered::class => [SetUpRegisteredClient::class],
+    ];
+
+    protected $tags = [
+        ClientPortal::class,
     ];
 
     protected $publishables = [
@@ -58,6 +69,8 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
+        $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
+
         Gate::define('view-client-portal', function ($user, Entry $portal): bool {
             return Portals::userCanView(User::fromUser($user), $portal);
         });

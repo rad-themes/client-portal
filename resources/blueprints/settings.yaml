@@ -61,6 +61,35 @@ tabs:
               if:
                 allow_registration: 'equals true'
           -
+            handle: captcha_provider
+            field:
+              type: button_group
+              display: 'Registration captcha'
+              default: none
+              options:
+                none: None
+                recaptcha: 'reCAPTCHA v2'
+                turnstile: 'Cloudflare Turnstile'
+              if:
+                allow_registration: 'equals true'
+          -
+            handle: captcha_site_key
+            field:
+              type: text
+              display: 'Captcha site key'
+              width: 50
+              unless:
+                captcha_provider: 'equals none'
+          -
+            handle: captcha_secret_key
+            field:
+              type: text
+              input_type: password
+              display: 'Captcha secret key'
+              width: 50
+              unless:
+                captcha_provider: 'equals none'
+          -
             handle: max_upload_mb
             field:
               type: integer

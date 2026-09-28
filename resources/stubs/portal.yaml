@@ -90,11 +90,10 @@ tabs:
                               -
                                 import: 'client-portal::module'
                               -
-                                handle: uploads
+                                handle: upload_help
                                 field:
-                                  type: assets
-                                  display: 'Files uploaded by the client'
-                                  container: portal_files
+                                  type: html
+                                  html: 'Uploaded files appear on this module in the portal, and in <strong>Assets → Portal Files → uploads</strong>.'
                           content:
                             display: 'Content page'
                             icon: text-formatting-initial-letter
@@ -108,9 +107,24 @@ tabs:
                                   display: Content
                                   container: assets
                                   buttons: [h2, h3, bold, italic, unorderedlist, orderedlist, quote, anchor, image, table]
+                          gallery:
+                            display: 'Image gallery'
+                            icon: media-image-picture-gallery
+                            fields:
+                              -
+                                import: 'client-portal::module'
+                              -
+                                handle: images
+                                field:
+                                  type: assets
+                                  display: Images
+                                  container: assets
+                                  mode: grid
+                                  validate:
+                                    - required
                           embed:
                             display: 'Embed'
-                            icon: media-image-picture-orientation
+                            icon: media-computer-screen-tv
                             fields:
                               -
                                 import: 'client-portal::module'
@@ -143,6 +157,28 @@ tabs:
               display: Clients
               instructions: 'Users who can see this portal.'
               mode: select
+          -
+            handle: comments_enabled
+            field:
+              type: toggle
+              display: Messages
+              instructions: 'Let clients and your team send messages in this portal.'
+          -
+            handle: notification_emails
+            field:
+              type: list
+              display: 'Activity emails for this portal'
+              instructions: 'Overrides the addon setting, e.g. the project manager. Leave empty to use the default.'
+          -
+            handle: mute_notifications
+            field:
+              type: toggle
+              display: 'Mute activity emails'
+          -
+            handle: disable_reminders
+            field:
+              type: toggle
+              display: 'No due date reminders'
           -
             handle: is_template
             field:

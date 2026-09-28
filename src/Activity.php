@@ -19,11 +19,12 @@ class Activity
     {
         $mode = Portals::setting('admin_notifications', 'instant');
 
-        if ($mode === 'off' || Portals::isStaff($user)) {
+        if ($mode === 'off' || $portal->get('mute_notifications') || Portals::isStaff($user)) {
             return;
         }
 
         $item = [
+            'emails' => array_values(array_filter((array) $portal->get('notification_emails', []))),
             'portal' => $portal->get('title'),
             'url' => route('client-portal.show', $portal->slug()),
             'user' => $user->name() ?: $user->email(),
@@ -38,7 +39,7 @@ class Activity
             return;
         }
 
-        self::notifyAdmins(new ClientActivity($item));
+        self::notifyAdmins(new ClientActivity($item), $item['emails']);
     }
 
     /**
@@ -57,9 +58,10 @@ class Activity
 
         File::delete(self::digestPath());
 
-        if ($items) {
-            self::notifyAdmins(new ActivityDigest($items));
-        }
+        // Portals with their own recipients get their own digest; everything else goes to the default recipients.
+        collect($items)
+            ->groupBy(fn (array $item) => implode(',', $item['emails'] ?? []))
+            ->each(fn ($group, string $emails) => self::notifyAdmins(new ActivityDigest($group->all()), array_filter(explode(',', $emails))));
 
         return count($items);
     }
@@ -69,9 +71,12 @@ class Activity
         return storage_path('client-portal/activity-digest.jsonl');
     }
 
-    private static function notifyAdmins(object $notification): void
+    /**
+     * @param  array<int, string>  $emails  Recipients for this portal, or empty for the default recipients
+     */
+    private static function notifyAdmins(object $notification, array $emails = []): void
     {
-        $emails = array_filter((array) Portals::setting('admin_emails', []));
+        $emails = $emails ?: array_filter((array) Portals::setting('admin_emails', []));
 
         if (! $emails) {
             $emails = UserFacade::all()->filter->isSuper()->map->email()->all();

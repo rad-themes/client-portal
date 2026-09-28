@@ -129,14 +129,15 @@ class TemplatesAndSetupTest extends TestCase
     {
         $client = $this->makeUser('client@example.com');
         $portal = $this->makePortal('acme', [$client->id()]);
-        $this->changeModule($portal, 'upload-1', ['uploads' => ['uploads/acme/x.pdf'], 'completed_by' => $client->id()]);
+        $this->changeModule($portal, 'upload-1', ['completed_by' => $client->id()]);
+        Portals::addMessage($portal, $client, 'A private message');
         $path = sys_get_temp_dir().'/portal-export-'.uniqid().'.json';
 
         $this->artisan('client-portal:export', ['slug' => 'acme', 'path' => $path])->assertSuccessful();
 
         $json = File::get($path);
         $this->assertStringNotContainsString($client->id(), $json);
-        $this->assertStringNotContainsString('uploads/acme/x.pdf', $json);
+        $this->assertStringNotContainsString('A private message', $json);
 
         $this->artisan('client-portal:import', ['path' => $path])->assertFailed();
         $this->artisan('client-portal:import', ['path' => $path, '--slug' => 'acme-copy'])->assertSuccessful();

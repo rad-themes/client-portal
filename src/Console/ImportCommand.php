@@ -28,7 +28,7 @@ class ImportCommand extends Command
 
         $slug = $this->option('slug') ?? $json['slug'];
 
-        if (Entry::query()->where('collection', Portals::COLLECTION)->where('slug', $slug)->exists()) {
+        if (Portals::query()->where('slug', $slug)->count() > 0) {
             $this->components->error("A portal with the slug [{$slug}] already exists. Use --slug to pick another.");
 
             return self::FAILURE;

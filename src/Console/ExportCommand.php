@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Komalnakrani\ClientPortal\Portals;
 use Statamic\Console\RunsInPlease;
-use Statamic\Facades\Entry;
 
 class ExportCommand extends Command
 {
@@ -14,14 +13,11 @@ class ExportCommand extends Command
 
     protected $signature = 'client-portal:export {slug : The portal or template to export} {path? : Where to write the JSON file}';
 
-    protected $description = 'Export a portal or template (without clients or client uploads) to JSON';
+    protected $description = 'Export a portal or template (without clients, uploads or messages) to JSON';
 
     public function handle(): int
     {
-        $portal = Entry::query()
-            ->where('collection', Portals::COLLECTION)
-            ->where('slug', $this->argument('slug'))
-            ->first();
+        $portal = Portals::query()->where('slug', $this->argument('slug'))->first();
 
         if (! $portal) {
             $this->components->error('Portal not found.');
@@ -29,10 +25,10 @@ class ExportCommand extends Command
             return self::FAILURE;
         }
 
-        $data = $portal->data()->except(['clients', 'updated_by', 'updated_at'])->all();
+        $data = $portal->data()->except(['clients', 'messages', 'updated_by', 'updated_at'])->all();
         $data['phases'] = collect((array) ($data['phases'] ?? []))->map(function (array $phase) {
             $phase['modules'] = collect((array) ($phase['modules'] ?? []))
-                ->map(fn (array $module) => array_diff_key($module, array_flip(['uploads', 'completed_at', 'completed_by'])))
+                ->map(fn (array $module) => array_diff_key($module, array_flip(['completed_at', 'completed_by'])))
                 ->all();
 
             return $phase;

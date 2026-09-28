@@ -30,7 +30,7 @@ class SendRemindersCommand extends Command
         $target = today()->addDays($days);
         $sent = 0;
 
-        foreach (Portals::all() as $portal) {
+        foreach (Portals::all()->reject(fn ($portal) => $portal->get('disable_reminders')) as $portal) {
             foreach (Portals::modules($portal) as ['module' => $module]) {
                 if (Portals::status($module) !== 'active' || empty($module['due_date'])) {
                     continue;

@@ -1,13 +1,16 @@
-{{ if items }}
-    <ul class="space-y-2 text-sm">
-        {{ items }}
-            <li>
-                <a href="{{ route name="client-portal.download" portal="{portal_slug}" module="{module_ref}" index="{index}" }}"
-                    class="flex items-center justify-between gap-3 rounded-lg bg-zinc-50 px-3 py-2 hover:bg-zinc-100">
-                    <span class="truncate font-medium">{{ basename }}</span>
-                    <span class="shrink-0 text-zinc-500">{{ size }}</span>
+{{ client_portal:files portal="{page:id}" module="{module_ref}" }}
+    {{ if first }}<ul class="space-y-2 text-sm">{{ /if }}
+        <li class="flex items-center gap-2 rounded-lg bg-zinc-50 py-1 pr-1 pl-3">
+            <span class="min-w-0 flex-1 truncate font-medium">{{ name }}</span>
+            <span class="shrink-0 text-zinc-500">{{ size }}</span>
+            {{ if preview_url }}
+                <a href="{{ preview_url }}" target="_blank" rel="noopener" class="shrink-0 rounded-md px-2 py-1 font-medium text-brand hover:bg-white">
+                    {{ trans key="View" }}<span class="sr-only"> {{ name }}</span>
                 </a>
-            </li>
-        {{ /items }}
-    </ul>
-{{ /if }}
+            {{ /if }}
+            <a href="{{ url }}" class="shrink-0 rounded-md px-2 py-1 font-medium text-brand hover:bg-white">
+                {{ trans key="Download" }}<span class="sr-only"> {{ name }}</span>
+            </a>
+        </li>
+    {{ if last }}</ul>{{ /if }}
+{{ /client_portal:files }}

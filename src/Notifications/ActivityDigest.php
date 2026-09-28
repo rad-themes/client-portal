@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 class ActivityDigest extends Notification
 {
     /**
-     * @param  array<int, array{portal: string, url: string, user: string, description: string, at: string}>  $items
+     * @param  array<int, array{emails?: array<int, string>, portal: string, url: string, user: string, description: string, at: string}>  $items
      */
     public function __construct(public array $items) {}
 
@@ -29,7 +29,7 @@ class ActivityDigest extends Notification
             $message->line("**{$portal}**");
 
             foreach ($items as $item) {
-                $message->line('• '.__(':user :description', $item));
+                $message->line('• '.__(':user :description', ['user' => $item['user'], 'description' => $item['description']]));
             }
         }
 
