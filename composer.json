@@ -1,0 +1,46 @@
+{
+    "name": "komalnakrani/client-portal",
+    "description": "Private client portals for Statamic: phases, modules, files and content pages for each client.",
+    "type": "statamic-addon",
+    "license": "proprietary",
+    "keywords": [
+        "statamic",
+        "client portal",
+        "addon"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Komalnakrani\\ClientPortal\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Komalnakrani\\ClientPortal\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8.3",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Client Portal",
+            "description": "Private, branded client portals built with Statamic."
+        },
+        "laravel": {
+            "providers": [
+                "Komalnakrani\\ClientPortal\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

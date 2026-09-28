@@ -1,0 +1,26 @@
+<a href="{{ route name="client-portal.show" portal="{page:slug}" }}" class="text-sm text-zinc-500 hover:text-zinc-900">← {{ page:title }}</a>
+
+<div class="mt-6 grid gap-10 md:grid-cols-[14rem_1fr]">
+    <nav class="space-y-1 text-sm" aria-label="{{ trans key="Pages" }}">
+        {{ phases }}
+            {{ modules }}
+                {{ if type == 'content' && status:value != 'inactive' }}
+                    <a href="{{ route name="client-portal.page" portal="{page:slug}" module="{id}" }}"
+                        class="block rounded-lg px-3 py-2 {{ id == module_id ? 'bg-brand/10 font-medium text-brand' : 'text-zinc-600 hover:bg-zinc-100' }}"
+                        {{ if id == module_id }}aria-current="page"{{ /if }}>{{ title }}</a>
+                {{ /if }}
+            {{ /modules }}
+        {{ /phases }}
+    </nav>
+
+    <article>
+        {{ phases }}
+            {{ modules }}
+                {{ if id == module_id }}
+                    <h1 class="text-3xl font-semibold tracking-tight">{{ title }}</h1>
+                    <div class="prose mt-6 max-w-none">{{ body }}</div>
+                {{ /if }}
+            {{ /modules }}
+        {{ /phases }}
+    </article>
+</div>

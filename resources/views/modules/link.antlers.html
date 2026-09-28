@@ -1,0 +1,5 @@
+{{ partial src="client-portal::card" }}
+    <a href="{{ url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
+        {{ button_label ?? 'Open' | trans }} ↗
+    </a>
+{{ /partial }}

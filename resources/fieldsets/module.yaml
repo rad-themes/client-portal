@@ -1,0 +1,31 @@
+title: 'Portal module'
+fields:
+  -
+    handle: title
+    field:
+      type: text
+      display: Title
+      validate:
+        - required
+  -
+    handle: description
+    field:
+      type: textarea
+      display: Description
+  -
+    handle: status
+    field:
+      type: button_group
+      display: Status
+      default: active
+      options:
+        active: Active
+        inactive: Inactive
+        complete: Complete
+      width: 50
+  -
+    handle: due_date
+    field:
+      type: date
+      display: 'Due date'
+      width: 50

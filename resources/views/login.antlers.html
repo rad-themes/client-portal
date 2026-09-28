@@ -1,0 +1,27 @@
+<div class="mx-auto mt-10 max-w-sm rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+    <h1 class="text-xl font-semibold tracking-tight">{{ trans key="Log in to your portal" }}</h1>
+
+    {{ user:login_form redirect="/portal" class="mt-6 space-y-4" }}
+        {{ if errors }}
+            <div class="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">
+                {{ errors }}<p>{{ value }}</p>{{ /errors }}
+            </div>
+        {{ /if }}
+
+        <label class="block">
+            <span class="text-sm font-medium">{{ trans key="Email" }}</span>
+            <input type="email" name="email" value="{{ old:email }}" required autocomplete="email"
+                class="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none">
+        </label>
+
+        <label class="block">
+            <span class="text-sm font-medium">{{ trans key="Password" }}</span>
+            <input type="password" name="password" required autocomplete="current-password"
+                class="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none">
+        </label>
+
+        <button type="submit" class="w-full rounded-lg bg-brand px-4 py-2.5 font-medium text-white hover:bg-brand/90">
+            {{ trans key="Log in" }}
+        </button>
+    {{ /user:login_form }}
+</div>

@@ -1,0 +1,115 @@
+title: Portal
+tabs:
+  main:
+    display: Portal
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              display: Title
+              validate:
+                - required
+          -
+            handle: project_status
+            field:
+              type: text
+              display: 'Project status'
+              instructions: 'Shown at the top of the portal, e.g. "In progress".'
+          -
+            handle: welcome
+            field:
+              type: bard
+              display: 'Welcome message'
+              buttons: [h2, h3, bold, italic, unorderedlist, orderedlist, anchor]
+          -
+            handle: phases
+            field:
+              type: grid
+              display: Phases
+              mode: stacked
+              add_row: 'Add phase'
+              fields:
+                -
+                  handle: title
+                  field:
+                    type: text
+                    display: 'Phase title'
+                    validate:
+                      - required
+                -
+                  handle: modules
+                  field:
+                    type: replicator
+                    display: Modules
+                    button_label: 'Add module'
+                    sets:
+                      modules:
+                        display: Modules
+                        sets:
+                          link:
+                            display: Link
+                            icon: link
+                            fields:
+                              -
+                                import: 'client-portal::module'
+                              -
+                                handle: url
+                                field:
+                                  type: link
+                                  display: URL
+                                  validate:
+                                    - required
+                              -
+                                handle: button_label
+                                field:
+                                  type: text
+                                  display: 'Button label'
+                                  placeholder: Open
+                          file:
+                            display: 'File download'
+                            icon: file-content-list
+                            fields:
+                              -
+                                import: 'client-portal::module'
+                              -
+                                handle: files
+                                field:
+                                  type: assets
+                                  display: Files
+                                  container: assets
+                                  validate:
+                                    - required
+                          content:
+                            display: 'Content page'
+                            icon: text-formatting-initial-letter
+                            fields:
+                              -
+                                import: 'client-portal::module'
+                              -
+                                handle: body
+                                field:
+                                  type: bard
+                                  display: Content
+                                  container: assets
+                                  buttons: [h2, h3, bold, italic, unorderedlist, orderedlist, quote, anchor, image, table]
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              validate:
+                - required
+          -
+            handle: clients
+            field:
+              type: users
+              display: Clients
+              instructions: 'Users who can see this portal.'
+              mode: select

@@ -1,0 +1,19 @@
+<h1 class="text-2xl font-semibold tracking-tight">{{ trans key="Your portals" }}</h1>
+
+{{ if portals }}
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+        {{ portals }}
+            <li>
+                <a href="{{ route name="client-portal.show" portal="{slug}" }}"
+                    class="block rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-brand">
+                    <span class="font-medium">{{ title }}</span>
+                    {{ if project_status }}
+                        <span class="mt-2 block text-sm text-zinc-500">{{ project_status }}</span>
+                    {{ /if }}
+                </a>
+            </li>
+        {{ /portals }}
+    </ul>
+{{ else }}
+    <p class="mt-6 text-zinc-600">{{ trans key="You don't have any portals yet." }}</p>
+{{ /if }}

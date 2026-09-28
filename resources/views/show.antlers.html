@@ -1,0 +1,23 @@
+<header>
+    <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-3xl font-semibold tracking-tight">{{ title }}</h1>
+        {{ if project_status }}
+            <span class="rounded-full bg-brand/10 px-3 py-1 text-sm font-medium text-brand">{{ project_status }}</span>
+        {{ /if }}
+    </div>
+
+    {{ if welcome }}
+        <div class="prose mt-4 max-w-none">{{ welcome }}</div>
+    {{ /if }}
+</header>
+
+{{ phases }}
+    <section class="mt-10">
+        <h2 class="text-lg font-semibold">{{ title }}</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            {{ modules }}
+                {{ partial src="client-portal::modules/{type}" portal_slug="{page:slug}" }}
+            {{ /modules }}
+        </div>
+    </section>
+{{ /phases }}
