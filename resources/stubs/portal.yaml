@@ -17,7 +17,7 @@ tabs:
             field:
               type: text
               display: 'Project status'
-              instructions: 'Shown at the top of the portal, e.g. "In progress" or "Phase 2 Active".'
+              instructions: 'Shown at the top of the portal, e.g. "In progress".'
           -
             handle: welcome
             field:
@@ -79,9 +79,22 @@ tabs:
                                 field:
                                   type: assets
                                   display: Files
-                                  container: assets
+                                  instructions: 'Stored privately. Only people with access to this portal can download them.'
+                                  container: portal_files
                                   validate:
                                     - required
+                          upload:
+                            display: 'Client upload'
+                            icon: upload-cloud
+                            fields:
+                              -
+                                import: 'client-portal::module'
+                              -
+                                handle: uploads
+                                field:
+                                  type: assets
+                                  display: 'Files uploaded by the client'
+                                  container: portal_files
                           content:
                             display: 'Content page'
                             icon: text-formatting-initial-letter
@@ -96,8 +109,8 @@ tabs:
                                   container: assets
                                   buttons: [h2, h3, bold, italic, unorderedlist, orderedlist, quote, anchor, image, table]
                           embed:
-                            display: 'Embed (Loom, Figma, Prototype)'
-                            icon: video
+                            display: 'Embed'
+                            icon: media-image-picture-orientation
                             fields:
                               -
                                 import: 'client-portal::module'
@@ -105,73 +118,13 @@ tabs:
                                 handle: embed_url
                                 field:
                                   type: text
-                                  display: 'Embed or Shared URL'
-                                  instructions: 'Paste Figma, Loom, YouTube, Google Doc, or Typeform link'
-                              -
-                                handle: embed_code
-                                field:
-                                  type: textarea
-                                  display: 'Custom Iframe Code (Optional)'
-                                  instructions: 'Or paste raw <iframe> embed snippet'
-                          action:
-                            display: 'Client Action / Approval'
-                            icon: check-square
-                            fields:
-                              -
-                                import: 'client-portal::module'
-                              -
-                                handle: action_label
-                                field:
-                                  type: text
-                                  display: 'Action Button Label'
-                                  placeholder: 'Approve Deliverable'
-                              -
-                                handle: action_required
-                                field:
-                                  type: toggle
-                                  display: 'Action Required Badge'
-                                  default: true
-  branding:
-    display: Branding & Settings
-    sections:
-      -
-        fields:
-          -
-            handle: logo
-            field:
-              type: assets
-              display: 'Client / Project Logo'
-              max_files: 1
-              container: assets
-          -
-            handle: brand_color
-            field:
-              type: color
-              display: 'Brand Accent Color'
-              default: '#4F46E5'
-          -
-            handle: access_type
-            field:
-              type: select
-              display: 'Access Restriction'
-              default: user_login
-              options:
-                user_login: 'Logged-in Clients Only'
-                password: 'Password Protected'
-                token: 'Direct Link Access Key'
-                public: 'Public Access'
-          -
-            handle: access_password
-            field:
-              type: text
-              display: 'Portal Password'
-              instructions: 'Required if access type is set to Password Protected'
-          -
-            handle: access_token
-            field:
-              type: text
-              display: 'Access Token / Secret Key'
-              instructions: 'Secret query token (e.g. ?token=secret123)'
+                                  input_type: url
+                                  display: 'Embed URL'
+                                  instructions: 'The embed/iframe URL from Figma, Loom, YouTube, Google Docs, Google Calendar, Typeform, etc.'
+                                  validate:
+                                    - required
+                                    - url
+                                    - 'starts_with:https://'
   sidebar:
     display: Sidebar
     sections:
@@ -188,5 +141,11 @@ tabs:
             field:
               type: users
               display: Clients
-              instructions: 'Users who can see this portal when logged in.'
+              instructions: 'Users who can see this portal.'
               mode: select
+          -
+            handle: is_template
+            field:
+              type: toggle
+              display: Template
+              instructions: 'Templates are never shown to clients. Duplicate them, or use the "Apply template" action.'

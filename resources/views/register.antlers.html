@@ -1,0 +1,22 @@
+{{ partial src="client-portal::auth-card" heading="Create your account" }}
+    {{ user:register_form redirect="/portal" class="space-y-4" }}
+        {{ if errors }}
+            <div class="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">
+                {{ errors }}<p>{{ value }}</p>{{ /errors }}
+            </div>
+        {{ /if }}
+
+        <input type="hidden" name="_client_portal" value="1">
+
+        {{ partial src="client-portal::input" name="name" label="Name" autocomplete="name" value="{old:name}" }}
+        {{ partial src="client-portal::input" name="email" type="email" label="Email" autocomplete="email" value="{old:email}" }}
+        {{ partial src="client-portal::input" name="password" type="password" label="Password" autocomplete="new-password" }}
+        {{ partial src="client-portal::input" name="password_confirmation" type="password" label="Confirm password" autocomplete="new-password" }}
+
+        <button type="submit" class="w-full rounded-lg bg-brand px-4 py-2.5 font-medium text-white hover:bg-brand/90">{{ trans key="Create account" }}</button>
+    {{ /user:register_form }}
+
+    <p class="mt-6 text-center text-sm">
+        <a href="{{ route name="client-portal.login" }}" class="text-zinc-600 hover:text-zinc-900">{{ trans key="Already have an account? Log in" }}</a>
+    </p>
+{{ /partial }}

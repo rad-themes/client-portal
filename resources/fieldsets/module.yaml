@@ -15,14 +15,13 @@ fields:
   -
     handle: status
     field:
-      type: select
+      type: button_group
       display: Status
+      instructions: 'Inactive modules are visible but locked.'
       default: active
       options:
         active: Active
         inactive: Inactive
-        in_review: 'In Review'
-        pending_approval: 'Pending Approval'
         complete: Complete
       width: 50
   -
@@ -30,4 +29,20 @@ fields:
     field:
       type: date
       display: 'Due date'
+      instructions: 'Clients get a reminder email before this date.'
       width: 50
+  -
+    handle: client_can_complete
+    field:
+      type: toggle
+      display: 'Client can mark complete'
+      width: 50
+  -
+    handle: complete_label
+    field:
+      type: text
+      display: 'Complete button label'
+      placeholder: 'Mark as complete'
+      width: 50
+      if:
+        client_can_complete: 'equals true'

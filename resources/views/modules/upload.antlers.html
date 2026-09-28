@@ -1,0 +1,14 @@
+{{ partial src="client-portal::card" }}
+    {{ partial src="client-portal::file-list" :items="uploads" }}
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-2"
+        action="{{ route name="client-portal.upload" portal="{portal_slug}" module="{module_ref}" }}">
+        {{ csrf_field }}
+        <label class="block text-sm">
+            <span class="sr-only">{{ trans key="Choose files" }}</span>
+            <input type="file" name="files[]" multiple required
+                class="block w-full text-sm text-zinc-600 file:mr-3 file:rounded-lg file:border-0 file:bg-zinc-100 file:px-3 file:py-1.5 file:font-medium hover:file:bg-zinc-200">
+        </label>
+        <button type="submit" class="rounded-lg bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand/90">{{ trans key="Upload" }}</button>
+    </form>
+{{ /partial }}

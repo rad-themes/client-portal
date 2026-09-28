@@ -1,12 +1,3 @@
 {{ partial src="client-portal::card" }}
-    <ul class="space-y-2 text-sm">
-        {{ files }}
-            <li>
-                <a href="{{ url }}" download class="flex items-center justify-between gap-3 rounded-lg bg-zinc-50 px-3 py-2 hover:bg-zinc-100">
-                    <span class="truncate font-medium">{{ basename }}</span>
-                    <span class="shrink-0 text-zinc-500">{{ size }}</span>
-                </a>
-            </li>
-        {{ /files }}
-    </ul>
+    {{ partial src="client-portal::file-list" :items="files" }}
 {{ /partial }}

@@ -1,0 +1,13 @@
+{{ if items }}
+    <ul class="space-y-2 text-sm">
+        {{ items }}
+            <li>
+                <a href="{{ route name="client-portal.download" portal="{portal_slug}" module="{module_ref}" index="{index}" }}"
+                    class="flex items-center justify-between gap-3 rounded-lg bg-zinc-50 px-3 py-2 hover:bg-zinc-100">
+                    <span class="truncate font-medium">{{ basename }}</span>
+                    <span class="shrink-0 text-zinc-500">{{ size }}</span>
+                </a>
+            </li>
+        {{ /items }}
+    </ul>
+{{ /if }}

@@ -4,21 +4,23 @@ namespace Komalnakrani\ClientPortal\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Komalnakrani\ClientPortal\Activity;
 use Komalnakrani\ClientPortal\Portals;
 use Statamic\Contracts\Entries\Entry;
+use Statamic\Facades\Asset;
+use Statamic\Facades\AssetContainer;
 use Statamic\Facades\User;
 use Statamic\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class PortalController
+class PortalController extends Controller
 {
-    public function login(): View|RedirectResponse
-    {
-        if (User::current()) {
-            return redirect()->route('client-portal.index');
-        }
-
-        return $this->view('login', ['title' => __('Log in')]);
-    }
+    /**
+     * Files clients may upload. Anything executable or renderable as a page is excluded.
+     */
+    private const UPLOAD_EXTENSIONS = 'pdf,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,txt,csv,rtf,zip,jpg,jpeg,png,gif,webp,heic,mp3,mp4,mov,ai,psd,eps,sketch,fig';
 
     public function index(): View|RedirectResponse
     {
@@ -31,96 +33,108 @@ class PortalController
         return $this->view('index', ['title' => __('Your portals'), 'portals' => $portals]);
     }
 
-    public function show(Request $request, string $portal): View|RedirectResponse
+    public function show(string $portal): View
     {
-        $entry = Portals::findBySlug($portal) ?? abort(404);
+        $entry = $this->authorizedPortal($portal);
 
-        if (! Portals::userCanView(User::current(), $entry, $request->input('password'), $request->query('token'))) {
-            if ($entry->get('access_type') === 'password') {
-                return $this->view('password', [
-                    'portal' => $entry,
-                    'title' => $entry->get('title'),
-                    'error' => $request->isMethod('post') ? __('Incorrect password. Please try again.') : null,
-                ]);
-            }
-
-            if ($entry->get('access_type') === 'token') {
-                abort(403, 'Access denied. Valid access token required.');
-            }
-
-            if (! User::current()) {
-                return redirect()->route('client-portal.login');
-            }
-
-            abort(403, 'Access denied.');
-        }
-
-        $progress = Portals::calculateProgress($entry);
-
-        return $this->view('show', ['progress' => $progress])->cascadeContent($entry);
-    }
-
-    public function verifyPassword(Request $request, string $portal): View|RedirectResponse
-    {
-        $entry = Portals::findBySlug($portal) ?? abort(404);
-        $password = $request->input('password');
-
-        if (Portals::userCanView(User::current(), $entry, $password)) {
-            return redirect()->route('client-portal.show', $entry->slug());
-        }
-
-        return $this->view('password', [
-            'portal' => $entry,
-            'title' => $entry->get('title'),
-            'error' => __('Incorrect password. Please try again.'),
-        ]);
+        return $this->view('show', ['progress' => Portals::progress($entry)])->cascadeContent($entry);
     }
 
     public function page(string $portal, string $module): View
     {
         $entry = $this->authorizedPortal($portal);
-        $found = Portals::findModule($entry, $module);
-
-        $status = is_array($found['module']['status'] ?? null) ? ($found['module']['status']['value'] ?? 'active') : ($found['module']['status'] ?? 'active');
-
-        abort_unless($found && ($found['module']['type'] ?? '') === 'content' && $status !== 'inactive', 404);
+        $this->usableModule($entry, $module, 'content');
 
         return $this->view('page', ['module_id' => $module])->cascadeContent($entry);
     }
 
-    public function toggleStatus(Request $request, string $portal, string $module): RedirectResponse
+    public function download(string $portal, string $module, int $index): StreamedResponse
     {
         $entry = $this->authorizedPortal($portal);
-        $found = Portals::findModule($entry, $module);
+        $found = $this->usableModule($entry, $module, ['file', 'upload']);
 
-        abort_unless($found, 404);
+        $field = $found['type'] === 'file' ? 'files' : 'uploads';
+        $path = ((array) ($found[$field] ?? []))[$index] ?? abort(404);
+        $container = AssetContainer::find(Portals::FILES_CONTAINER) ?? abort(404);
 
-        $newStatus = $request->input('status', 'complete');
-        Portals::updateModuleStatus($entry, $module, $newStatus);
+        abort_unless($container->disk()->exists($path), 404);
 
-        return redirect()->route('client-portal.show', $entry->slug())
-            ->with('success', __('Module status updated successfully.'));
+        return $container->disk()->filesystem()->download($path);
+    }
+
+    public function complete(string $portal, string $module): RedirectResponse
+    {
+        $entry = $this->authorizedPortal($portal);
+        $found = $this->usableModule($entry, $module);
+
+        abort_unless($found['client_can_complete'] ?? false, 403);
+
+        if (Portals::status($found) !== 'complete') {
+            Portals::updateModule($entry, $module, fn (array $item) => array_merge($item, [
+                'status' => 'complete',
+                'completed_at' => now()->toIso8601String(),
+                'completed_by' => User::current()->id(),
+            ]));
+
+            Activity::record($entry, User::current(), __('completed “:module”', ['module' => $found['title'] ?? '']));
+        }
+
+        return redirect()->route('client-portal.show', $entry->slug())->with('portal_status', __('Marked as complete. Thank you!'));
+    }
+
+    public function upload(Request $request, string $portal, string $module): RedirectResponse
+    {
+        $entry = $this->authorizedPortal($portal);
+        $found = $this->usableModule($entry, $module, 'upload');
+
+        $request->validate([
+            'files' => ['required', 'array', 'max:10'],
+            'files.*' => ['file', 'max:'.((int) Portals::setting('max_upload_mb', 20) * 1024), 'extensions:'.self::UPLOAD_EXTENSIONS],
+        ]);
+
+        $container = AssetContainer::find(Portals::FILES_CONTAINER) ?? abort(500, 'Run php please client-portal:install');
+        $paths = [];
+
+        foreach ($request->file('files') as $file) {
+            $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) ?: 'file';
+            $path = "uploads/{$entry->slug()}/".now()->format('Ymd-His').'-'.Str::random(6)."-{$name}.".strtolower($file->getClientOriginalExtension());
+
+            $container->disk()->filesystem()->putFileAs(dirname($path), $file, basename($path));
+            Asset::make()->container($container->handle())->path($path)->save();
+            $paths[] = $path;
+        }
+
+        Portals::updateModule($entry, $module, fn (array $item) => array_merge($item, [
+            'uploads' => array_values(array_merge((array) ($item['uploads'] ?? []), $paths)),
+        ]));
+
+        Activity::record($entry, User::current(), trans_choice('uploaded :count file to “:module”|uploaded :count files to “:module”', count($paths), ['module' => $found['title'] ?? '']));
+
+        return redirect()->route('client-portal.show', $entry->slug())->with('portal_status', __('Thanks! Your files were uploaded.'));
     }
 
     private function authorizedPortal(string $slug): Entry
     {
         $entry = Portals::findBySlug($slug) ?? abort(404);
 
-        if (! Portals::userCanView(User::current(), $entry)) {
-            if (! User::current()) {
-                abort(401);
-            }
-            abort(403);
-        }
+        Gate::authorize('view-client-portal', $entry);
 
         return $entry;
     }
 
     /**
-     * @param  array<string, mixed>  $data
+     * The module, if it exists, is not inactive and is one of the given types.
+     *
+     * @param  string|array<int, string>|null  $types
+     * @return array<string, mixed>
      */
-    private function view(string $template, array $data = []): View
+    private function usableModule(Entry $portal, string $moduleId, string|array|null $types = null): array
     {
-        return View::make("client-portal::{$template}", $data)->layout('client-portal::layout');
+        $module = Portals::findModule($portal, $moduleId)['module'] ?? abort(404);
+
+        abort_if(Portals::status($module) === 'inactive', 404);
+        abort_if($types && ! in_array($module['type'] ?? null, (array) $types, true), 404);
+
+        return $module;
     }
 }

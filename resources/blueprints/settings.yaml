@@ -1,0 +1,96 @@
+tabs:
+  branding:
+    display: Branding
+    sections:
+      -
+        fields:
+          -
+            handle: portal_name
+            field:
+              type: text
+              display: 'Portal name'
+              instructions: 'Shown in the header and emails. Defaults to your app name.'
+          -
+            handle: logo
+            field:
+              type: assets
+              display: Logo
+              container: assets
+              max_files: 1
+          -
+            handle: brand_color
+            field:
+              type: color
+              display: 'Brand colour'
+          -
+            handle: login_heading
+            field:
+              type: text
+              display: 'Login heading'
+              placeholder: 'Log in to your portal'
+          -
+            handle: login_intro
+            field:
+              type: textarea
+              display: 'Login intro'
+          -
+            handle: custom_css
+            field:
+              type: code
+              mode: css
+              display: 'Custom CSS'
+  clients:
+    display: Clients
+    sections:
+      -
+        fields:
+          -
+            handle: allow_registration
+            field:
+              type: toggle
+              display: 'Let clients register themselves'
+          -
+            handle: registration_template
+            field:
+              type: entries
+              display: 'Portal template for new clients'
+              instructions: 'When set, each client who registers gets their own copy of this template.'
+              collections:
+                - portals
+              max_items: 1
+              if:
+                allow_registration: 'equals true'
+          -
+            handle: max_upload_mb
+            field:
+              type: integer
+              display: 'Maximum client upload size (MB)'
+              default: 20
+  notifications:
+    display: Notifications
+    sections:
+      -
+        fields:
+          -
+            handle: admin_notifications
+            field:
+              type: button_group
+              display: 'Email me about client activity'
+              default: instant
+              options:
+                'off': 'Off'
+                instant: Instantly
+                digest: 'Daily digest'
+          -
+            handle: admin_emails
+            field:
+              type: list
+              display: 'Send activity emails to'
+              instructions: 'Defaults to all super users.'
+          -
+            handle: reminder_days
+            field:
+              type: integer
+              display: 'Send due date reminders this many days before'
+              instructions: 'Use 0 to turn reminders off.'
+              default: 2

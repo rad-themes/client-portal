@@ -2,14 +2,18 @@
 
 namespace Komalnakrani\ClientPortal;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
+use Komalnakrani\ClientPortal\Actions\ApplyTemplate;
+use Komalnakrani\ClientPortal\Actions\NotifyClients;
+use Komalnakrani\ClientPortal\Console\ExportCommand;
+use Komalnakrani\ClientPortal\Console\ImportCommand;
 use Komalnakrani\ClientPortal\Console\InstallCommand;
-use Komalnakrani\ClientPortal\Http\Controllers\CP\PortalController as CPPortalController;
-use Komalnakrani\ClientPortal\Http\Controllers\CP\TemplateController as CPTemplateController;
-use Komalnakrani\ClientPortal\Tags\ClientPortalTags;
+use Komalnakrani\ClientPortal\Console\SendDigestCommand;
+use Komalnakrani\ClientPortal\Console\SendRemindersCommand;
+use Komalnakrani\ClientPortal\Listeners\SetUpRegisteredClient;
 use Statamic\Contracts\Entries\Entry;
-use Statamic\Facades\CP\Nav;
+use Statamic\Events\UserRegistered;
 use Statamic\Facades\User;
 use Statamic\Providers\AddonServiceProvider;
 
@@ -17,40 +21,51 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $viewNamespace = 'client-portal';
 
-    protected $tags = [
-        ClientPortalTags::class,
+    protected $actions = [
+        ApplyTemplate::class,
+        NotifyClients::class,
     ];
 
     protected $commands = [
         InstallCommand::class,
+        SendRemindersCommand::class,
+        SendDigestCommand::class,
+        ExportCommand::class,
+        ImportCommand::class,
+    ];
+
+    protected $listen = [
+        UserRegistered::class => [SetUpRegisteredClient::class],
     ];
 
     protected $publishables = [
         __DIR__.'/../resources/dist' => '',
     ];
 
+    public function register(): void
+    {
+        parent::register();
+
+        if (! config('filesystems.disks.'.Portals::FILES_DISK)) {
+            config(['filesystems.disks.'.Portals::FILES_DISK => [
+                'driver' => 'local',
+                'root' => storage_path('app/client-portal'),
+                'visibility' => 'private',
+                'throw' => false,
+            ]]);
+        }
+    }
+
     public function bootAddon(): void
     {
         Gate::define('view-client-portal', function ($user, Entry $portal): bool {
             return Portals::userCanView(User::fromUser($user), $portal);
         });
+    }
 
-        Nav::extend(function ($nav) {
-            $nav->content('Client Portals')
-                ->section('Content')
-                ->route('client-portal.index')
-                ->icon('briefcase');
-        });
-
-        $this->registerCpRoutes(function () {
-            Route::name('client-portal.')->prefix('client-portal')->group(function () {
-                Route::get('/', [CPPortalController::class, 'index'])->name('index');
-                Route::get('create', [CPPortalController::class, 'create'])->name('create');
-                Route::post('/', [CPPortalController::class, 'store'])->name('store');
-                Route::post('{portal}/duplicate', [CPPortalController::class, 'duplicate'])->name('duplicate');
-                Route::delete('{portal}', [CPPortalController::class, 'destroy'])->name('destroy');
-                Route::get('templates', [CPTemplateController::class, 'index'])->name('templates.index');
-            });
-        });
+    protected function schedule(Schedule $schedule): void
+    {
+        $schedule->command('client-portal:send-reminders')->dailyAt('08:00');
+        $schedule->command('client-portal:send-digest')->dailyAt('17:00');
     }
 }
