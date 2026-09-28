@@ -9,7 +9,10 @@ Route::prefix('portal')->name('client-portal.')->group(function () {
 
     Route::middleware(RedirectGuestsToLogin::class)->group(function () {
         Route::get('/', [PortalController::class, 'index'])->name('index');
-        Route::get('{portal}', [PortalController::class, 'show'])->name('show');
-        Route::get('{portal}/{module}', [PortalController::class, 'page'])->name('page');
     });
+
+    Route::get('{portal}', [PortalController::class, 'show'])->name('show');
+    Route::post('{portal}/password', [PortalController::class, 'verifyPassword'])->name('verify-password');
+    Route::get('{portal}/{module}', [PortalController::class, 'page'])->name('page');
+    Route::post('{portal}/module/{module}/status', [PortalController::class, 'toggleStatus'])->name('module.status');
 });

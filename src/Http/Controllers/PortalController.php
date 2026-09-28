@@ -3,7 +3,7 @@
 namespace Komalnakrani\ClientPortal\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 use Komalnakrani\ClientPortal\Portals;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\User;
@@ -31,11 +31,49 @@ class PortalController
         return $this->view('index', ['title' => __('Your portals'), 'portals' => $portals]);
     }
 
-    public function show(string $portal): View
+    public function show(Request $request, string $portal): View|RedirectResponse
     {
-        $entry = $this->authorizedPortal($portal);
+        $entry = Portals::findBySlug($portal) ?? abort(404);
 
-        return $this->view('show')->cascadeContent($entry);
+        if (! Portals::userCanView(User::current(), $entry, $request->input('password'), $request->query('token'))) {
+            if ($entry->get('access_type') === 'password') {
+                return $this->view('password', [
+                    'portal' => $entry,
+                    'title' => $entry->get('title'),
+                    'error' => $request->isMethod('post') ? __('Incorrect password. Please try again.') : null,
+                ]);
+            }
+
+            if ($entry->get('access_type') === 'token') {
+                abort(403, 'Access denied. Valid access token required.');
+            }
+
+            if (! User::current()) {
+                return redirect()->route('client-portal.login');
+            }
+
+            abort(403, 'Access denied.');
+        }
+
+        $progress = Portals::calculateProgress($entry);
+
+        return $this->view('show', ['progress' => $progress])->cascadeContent($entry);
+    }
+
+    public function verifyPassword(Request $request, string $portal): View|RedirectResponse
+    {
+        $entry = Portals::findBySlug($portal) ?? abort(404);
+        $password = $request->input('password');
+
+        if (Portals::userCanView(User::current(), $entry, $password)) {
+            return redirect()->route('client-portal.show', $entry->slug());
+        }
+
+        return $this->view('password', [
+            'portal' => $entry,
+            'title' => $entry->get('title'),
+            'error' => __('Incorrect password. Please try again.'),
+        ]);
     }
 
     public function page(string $portal, string $module): View
@@ -43,21 +81,37 @@ class PortalController
         $entry = $this->authorizedPortal($portal);
         $found = Portals::findModule($entry, $module);
 
-        abort_unless(
-            $found
-            && $found['module']['type'] === 'content'
-            && ($found['module']['status'] ?? 'active') !== 'inactive',
-            404
-        );
+        $status = is_array($found['module']['status'] ?? null) ? ($found['module']['status']['value'] ?? 'active') : ($found['module']['status'] ?? 'active');
+
+        abort_unless($found && ($found['module']['type'] ?? '') === 'content' && $status !== 'inactive', 404);
 
         return $this->view('page', ['module_id' => $module])->cascadeContent($entry);
+    }
+
+    public function toggleStatus(Request $request, string $portal, string $module): RedirectResponse
+    {
+        $entry = $this->authorizedPortal($portal);
+        $found = Portals::findModule($entry, $module);
+
+        abort_unless($found, 404);
+
+        $newStatus = $request->input('status', 'complete');
+        Portals::updateModuleStatus($entry, $module, $newStatus);
+
+        return redirect()->route('client-portal.show', $entry->slug())
+            ->with('success', __('Module status updated successfully.'));
     }
 
     private function authorizedPortal(string $slug): Entry
     {
         $entry = Portals::findBySlug($slug) ?? abort(404);
 
-        Gate::authorize('view-client-portal', $entry);
+        if (! Portals::userCanView(User::current(), $entry)) {
+            if (! User::current()) {
+                abort(401);
+            }
+            abort(403);
+        }
 
         return $entry;
     }

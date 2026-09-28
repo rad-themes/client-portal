@@ -15,12 +15,14 @@ fields:
   -
     handle: status
     field:
-      type: button_group
+      type: select
       display: Status
       default: active
       options:
         active: Active
         inactive: Inactive
+        in_review: 'In Review'
+        pending_approval: 'Pending Approval'
         complete: Complete
       width: 50
   -

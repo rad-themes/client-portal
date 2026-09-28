@@ -3,6 +3,7 @@
 namespace Komalnakrani\ClientPortal\Tests\Feature;
 
 use Illuminate\Support\Facades\File;
+use Komalnakrani\ClientPortal\Portals;
 use Komalnakrani\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Contracts\Auth\User as UserContract;
@@ -41,6 +42,8 @@ class PortalAccessTest extends TestCase
     #[Test]
     public function guests_are_redirected_to_the_login_page(): void
     {
+        $this->makePortal('acme', []);
+
         $this->get('/portal')->assertRedirect(route('client-portal.login'));
         $this->get('/portal/acme')->assertRedirect(route('client-portal.login'));
     }
@@ -173,6 +176,52 @@ class PortalAccessTest extends TestCase
 
         $this->actingAs($client)->get('/portal/acme/content-1')->assertNotFound();
         $this->actingAs($client)->get('/portal/acme')->assertDontSee('/portal/acme/content-1');
+    }
+
+    #[Test]
+    public function password_protected_portals_require_password_authentication(): void
+    {
+        $portal = $this->makePortal('secret-portal', []);
+        $portal->set('access_type', 'password')->set('access_password', 'secret123')->save();
+
+        $this->get('/portal/secret-portal')
+            ->assertOk()
+            ->assertSee('password');
+
+        $this->post('/portal/secret-portal/password', ['password' => 'wrong'])
+            ->assertSee('Incorrect password');
+
+        $this->post('/portal/secret-portal/password', ['password' => 'secret123'])
+            ->assertRedirect(route('client-portal.show', 'secret-portal'));
+    }
+
+    #[Test]
+    public function token_access_allows_direct_viewing_with_secret_token(): void
+    {
+        $portal = $this->makePortal('token-portal', []);
+        $portal->set('access_type', 'token')->set('access_token', 'my-secret-token')->save();
+
+        $this->get('/portal/token-portal')
+            ->assertForbidden();
+
+        $this->get('/portal/token-portal?token=my-secret-token')
+            ->assertOk()
+            ->assertSee('Acme Website');
+    }
+
+    #[Test]
+    public function module_status_can_be_updated_by_client(): void
+    {
+        $client = $this->makeUser('client@example.com');
+        $portal = $this->makePortal('acme', [$client->id()]);
+
+        $this->actingAs($client)
+            ->post('/portal/acme/module/link-1/status', ['status' => 'complete'])
+            ->assertRedirect(route('client-portal.show', 'acme'));
+
+        $updated = Portals::findBySlug('acme');
+        $moduleInfo = Portals::findModule($updated, 'link-1');
+        $this->assertEquals('complete', $moduleInfo['module']['status']);
     }
 
     private function makeUser(string $email): UserContract
