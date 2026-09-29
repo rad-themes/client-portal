@@ -2,7 +2,7 @@
 
 ## 1.0.0 — 2026-09-28
 
-First release.
+First release, free and open source under the MIT license.
 
 - Private client portals at `/portal`, with login, registration, and forgot/reset password pages
 - Phases of modules: link, file download, client upload, content page, image gallery and embed

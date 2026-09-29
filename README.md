@@ -125,6 +125,10 @@ Portals live in your default site. Localizations share the origin's clients and 
 - Portals send `noindex`, and downloads send `Cache-Control: private, no-store`. Portal routes never go through Statamic's static cache.
 - Message text is escaped. Uploads are renamed and stored under unguessable folder names.
 
+## License
+
+Client Portal is free, open-source software released under the [MIT license](LICENSE.md).
+
 ## Development
 
 ```bash
