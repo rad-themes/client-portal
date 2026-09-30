@@ -1,10 +1,10 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Console;
+namespace RadThemes\ClientPortal\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Console\RunsInPlease;
 
 class ExportCommand extends Command

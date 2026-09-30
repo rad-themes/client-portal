@@ -1,12 +1,12 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Console;
+namespace RadThemes\ClientPortal\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
-use Komalnakrani\ClientPortal\Notifications\DueDateReminder;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Notifications\DueDateReminder;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Console\RunsInPlease;
 
 class SendRemindersCommand extends Command

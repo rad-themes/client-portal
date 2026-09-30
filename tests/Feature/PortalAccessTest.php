@@ -1,8 +1,8 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests\Feature;
+namespace RadThemes\ClientPortal\Tests\Feature;
 
-use Komalnakrani\ClientPortal\Tests\TestCase;
+use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Testing\Concerns\FakesRoles;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Actions;
+namespace RadThemes\ClientPortal\Actions;
 
 use Illuminate\Support\Facades\Notification;
-use Komalnakrani\ClientPortal\Notifications\PortalUpdated;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Notifications\PortalUpdated;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Actions\Action;
 use Statamic\Contracts\Entries\Entry;
 

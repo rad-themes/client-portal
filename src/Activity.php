@@ -1,11 +1,11 @@
 <?php
 
-namespace Komalnakrani\ClientPortal;
+namespace RadThemes\ClientPortal;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
-use Komalnakrani\ClientPortal\Notifications\ActivityDigest;
-use Komalnakrani\ClientPortal\Notifications\ClientActivity;
+use RadThemes\ClientPortal\Notifications\ActivityDigest;
+use RadThemes\ClientPortal\Notifications\ClientActivity;
 use Statamic\Contracts\Auth\User;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\User as UserFacade;

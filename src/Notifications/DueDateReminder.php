@@ -1,6 +1,6 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Notifications;
+namespace RadThemes\ClientPortal\Notifications;
 
 use Carbon\CarbonInterface;
 use Illuminate\Notifications\Messages\MailMessage;

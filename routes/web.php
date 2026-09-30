@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Komalnakrani\ClientPortal\Http\Controllers\AuthController;
-use Komalnakrani\ClientPortal\Http\Controllers\PortalController;
-use Komalnakrani\ClientPortal\Http\Middleware\RedirectGuestsToLogin;
+use RadThemes\ClientPortal\Http\Controllers\AuthController;
+use RadThemes\ClientPortal\Http\Controllers\PortalController;
+use RadThemes\ClientPortal\Http\Middleware\RedirectGuestsToLogin;
 
 Route::prefix('portal')->name('client-portal.')->group(function () {
     Route::get('login', [AuthController::class, 'login'])->name('login');

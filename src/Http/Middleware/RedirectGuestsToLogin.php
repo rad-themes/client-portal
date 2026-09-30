@@ -1,6 +1,6 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Http\Middleware;
+namespace RadThemes\ClientPortal\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

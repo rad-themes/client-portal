@@ -1,9 +1,9 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Http\Controllers;
+namespace RadThemes\ClientPortal\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Facades\User;
 use Statamic\View\View;
 

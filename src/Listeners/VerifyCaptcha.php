@@ -1,10 +1,10 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Listeners;
+namespace RadThemes\ClientPortal\Listeners;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Events\UserRegistering;
 
 /**

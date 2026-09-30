@@ -1,13 +1,13 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests\Feature;
+namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-use Komalnakrani\ClientPortal\Notifications\ClientActivity;
-use Komalnakrani\ClientPortal\Portals;
-use Komalnakrani\ClientPortal\Tests\TestCase;
+use RadThemes\ClientPortal\Notifications\ClientActivity;
+use RadThemes\ClientPortal\Portals;
+use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class ClientActionsTest extends TestCase

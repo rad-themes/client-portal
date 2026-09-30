@@ -1,8 +1,8 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Actions;
+namespace RadThemes\ClientPortal\Actions;
 
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Actions\Action;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;

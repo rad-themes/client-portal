@@ -1,8 +1,8 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Listeners;
+namespace RadThemes\ClientPortal\Listeners;
 
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Events\UserRegistered;
 use Statamic\Facades\Entry;
 

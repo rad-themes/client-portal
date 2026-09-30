@@ -1,11 +1,11 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests;
+namespace RadThemes\ClientPortal\Tests;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Komalnakrani\ClientPortal\Portals;
-use Komalnakrani\ClientPortal\ServiceProvider;
+use RadThemes\ClientPortal\Portals;
+use RadThemes\ClientPortal\ServiceProvider;
 use Statamic\Contracts\Auth\User as UserContract;
 use Statamic\Contracts\Entries\Entry as EntryContract;
 use Statamic\Facades\Addon;
@@ -55,7 +55,7 @@ abstract class TestCase extends AddonTestCase
      */
     protected function setSettings(array $settings): void
     {
-        Addon::get('komalnakrani/client-portal')->settings()->set($settings)->save();
+        Addon::get('rad-themes/client-portal')->settings()->set($settings)->save();
     }
 
     protected function makeUser(string $email, bool $super = false): UserContract

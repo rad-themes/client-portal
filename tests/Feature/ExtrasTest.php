@@ -1,17 +1,17 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests\Feature;
+namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-use Komalnakrani\ClientPortal\Activity;
-use Komalnakrani\ClientPortal\Notifications\ActivityDigest;
-use Komalnakrani\ClientPortal\Notifications\ClientActivity;
-use Komalnakrani\ClientPortal\Notifications\DueDateReminder;
-use Komalnakrani\ClientPortal\Notifications\NewMessage;
-use Komalnakrani\ClientPortal\Portals;
-use Komalnakrani\ClientPortal\Tests\TestCase;
+use RadThemes\ClientPortal\Activity;
+use RadThemes\ClientPortal\Notifications\ActivityDigest;
+use RadThemes\ClientPortal\Notifications\ClientActivity;
+use RadThemes\ClientPortal\Notifications\DueDateReminder;
+use RadThemes\ClientPortal\Notifications\NewMessage;
+use RadThemes\ClientPortal\Portals;
+use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;

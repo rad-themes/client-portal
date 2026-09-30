@@ -1,8 +1,8 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tags;
+namespace RadThemes\ClientPortal\Tags;
 
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Support\Str;

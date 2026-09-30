@@ -1,12 +1,12 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests\Feature;
+namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Support\Facades\File;
-use Komalnakrani\ClientPortal\Actions\ApplyTemplate;
-use Komalnakrani\ClientPortal\Listeners\SetUpRegisteredClient;
-use Komalnakrani\ClientPortal\Portals;
-use Komalnakrani\ClientPortal\Tests\TestCase;
+use RadThemes\ClientPortal\Actions\ApplyTemplate;
+use RadThemes\ClientPortal\Listeners\SetUpRegisteredClient;
+use RadThemes\ClientPortal\Portals;
+use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Events\UserRegistered;
 use Statamic\Facades\Entry;

@@ -1,15 +1,15 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Tests\Feature;
+namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
-use Komalnakrani\ClientPortal\Notifications\ActivityDigest;
-use Komalnakrani\ClientPortal\Notifications\ClientActivity;
-use Komalnakrani\ClientPortal\Notifications\DueDateReminder;
-use Komalnakrani\ClientPortal\Notifications\NewMessage;
-use Komalnakrani\ClientPortal\Notifications\PortalUpdated;
-use Komalnakrani\ClientPortal\Tests\TestCase;
+use RadThemes\ClientPortal\Notifications\ActivityDigest;
+use RadThemes\ClientPortal\Notifications\ClientActivity;
+use RadThemes\ClientPortal\Notifications\DueDateReminder;
+use RadThemes\ClientPortal\Notifications\NewMessage;
+use RadThemes\ClientPortal\Notifications\PortalUpdated;
+use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 /**

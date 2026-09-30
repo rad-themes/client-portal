@@ -1,6 +1,6 @@
 <?php
 
-namespace Komalnakrani\ClientPortal;
+namespace RadThemes\ClientPortal;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -41,7 +41,7 @@ class Portals
 
     public static function setting(string $key, mixed $default = null): mixed
     {
-        return Addon::get('komalnakrani/client-portal')->setting($key, $default) ?? $default;
+        return Addon::get('rad-themes/client-portal')->setting($key, $default) ?? $default;
     }
 
     /**

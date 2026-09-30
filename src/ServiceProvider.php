@@ -1,20 +1,20 @@
 <?php
 
-namespace Komalnakrani\ClientPortal;
+namespace RadThemes\ClientPortal;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
-use Komalnakrani\ClientPortal\Actions\ApplyTemplate;
-use Komalnakrani\ClientPortal\Actions\NotifyClients;
-use Komalnakrani\ClientPortal\Console\ExportCommand;
-use Komalnakrani\ClientPortal\Console\ImportCommand;
-use Komalnakrani\ClientPortal\Console\InstallCommand;
-use Komalnakrani\ClientPortal\Console\SendDigestCommand;
-use Komalnakrani\ClientPortal\Console\SendRemindersCommand;
-use Komalnakrani\ClientPortal\Listeners\PreserveClientProgress;
-use Komalnakrani\ClientPortal\Listeners\SetUpRegisteredClient;
-use Komalnakrani\ClientPortal\Listeners\VerifyCaptcha;
-use Komalnakrani\ClientPortal\Tags\ClientPortal;
+use RadThemes\ClientPortal\Actions\ApplyTemplate;
+use RadThemes\ClientPortal\Actions\NotifyClients;
+use RadThemes\ClientPortal\Console\ExportCommand;
+use RadThemes\ClientPortal\Console\ImportCommand;
+use RadThemes\ClientPortal\Console\InstallCommand;
+use RadThemes\ClientPortal\Console\SendDigestCommand;
+use RadThemes\ClientPortal\Console\SendRemindersCommand;
+use RadThemes\ClientPortal\Listeners\PreserveClientProgress;
+use RadThemes\ClientPortal\Listeners\SetUpRegisteredClient;
+use RadThemes\ClientPortal\Listeners\VerifyCaptcha;
+use RadThemes\ClientPortal\Tags\ClientPortal;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Events\EntrySaving;
 use Statamic\Events\UserRegistered;

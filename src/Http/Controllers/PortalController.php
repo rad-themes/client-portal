@@ -1,15 +1,15 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Http\Controllers;
+namespace RadThemes\ClientPortal\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use Komalnakrani\ClientPortal\Activity;
-use Komalnakrani\ClientPortal\Notifications\NewMessage;
-use Komalnakrani\ClientPortal\Portals;
+use RadThemes\ClientPortal\Activity;
+use RadThemes\ClientPortal\Notifications\NewMessage;
+use RadThemes\ClientPortal\Portals;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Asset;
 use Statamic\Facades\User;

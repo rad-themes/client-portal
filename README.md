@@ -11,7 +11,7 @@ Give every client a private, branded portal: project status and progress, phases
 ## Installation
 
 ```bash
-composer require komalnakrani/client-portal
+composer require rad-themes/client-portal
 php please client-portal:install
 ```
 

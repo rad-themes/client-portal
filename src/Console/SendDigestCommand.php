@@ -1,9 +1,9 @@
 <?php
 
-namespace Komalnakrani\ClientPortal\Console;
+namespace RadThemes\ClientPortal\Console;
 
 use Illuminate\Console\Command;
-use Komalnakrani\ClientPortal\Activity;
+use RadThemes\ClientPortal\Activity;
 use Statamic\Console\RunsInPlease;
 
 class SendDigestCommand extends Command

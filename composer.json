@@ -1,5 +1,5 @@
 {
-    "name": "komalnakrani/client-portal",
+    "name": "rad-themes/client-portal",
     "description": "Private client portals for Statamic: phases, modules, files and content pages for each client.",
     "type": "statamic-addon",
     "license": "MIT",
@@ -8,19 +8,19 @@
         "client portal",
         "addon"
     ],
-    "homepage": "https://github.com/komalnakrani/client-portal",
+    "homepage": "https://github.com/rad-themes/client-portal",
     "support": {
-        "issues": "https://github.com/komalnakrani/client-portal/issues",
-        "source": "https://github.com/komalnakrani/client-portal"
+        "issues": "https://github.com/rad-themes/client-portal/issues",
+        "source": "https://github.com/rad-themes/client-portal"
     },
     "autoload": {
         "psr-4": {
-            "Komalnakrani\\ClientPortal\\": "src"
+            "RadThemes\\ClientPortal\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Komalnakrani\\ClientPortal\\Tests\\": "tests"
+            "RadThemes\\ClientPortal\\Tests\\": "tests"
         }
     },
     "require": {
@@ -42,7 +42,7 @@
         },
         "laravel": {
             "providers": [
-                "Komalnakrani\\ClientPortal\\ServiceProvider"
+                "RadThemes\\ClientPortal\\ServiceProvider"
             ]
         }
     },
