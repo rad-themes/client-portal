@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 — 2026-09-30
+
+- Fix: on phones, a gallery module could make the portal wider than the screen
+- Screenshots in the README
+
 ## 1.0.0 — 2026-09-28
 
 First release, free and open source under the MIT license.

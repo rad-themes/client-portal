@@ -1,6 +1,16 @@
 # Client Portal for Statamic
 
+![A client portal with phases, files, a moodboard, approvals and messages](docs/screenshots/portal-top.png)
+
 Give every client a private, branded portal: project status and progress, phases, files, uploads, galleries, embeds, content pages, approvals, messages, reminders and activity emails.
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Portal overview](docs/screenshots/portal.png) | ![Mobile](docs/screenshots/mobile.png) |
+| ![Content page](docs/screenshots/content-page.png) | ![Branded login](docs/screenshots/login.png) |
+| ![Portal editor in the Control Panel](docs/screenshots/cp-editor.png) | ![Addon settings](docs/screenshots/cp-settings.png) |
 
 ## Requirements
 
