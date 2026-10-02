@@ -5,10 +5,10 @@ namespace RadThemes\ClientPortal\Tests\Feature;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use RadThemes\ClientPortal\Notifications\ClientActivity;
 use RadThemes\ClientPortal\Portals;
 use RadThemes\ClientPortal\Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 class ClientActionsTest extends TestCase
 {

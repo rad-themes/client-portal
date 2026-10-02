@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use RadThemes\ClientPortal\Http\Controllers\AuthController;
+use RadThemes\ClientPortal\Http\Controllers\ExtensionController;
 use RadThemes\ClientPortal\Http\Controllers\PortalController;
 use RadThemes\ClientPortal\Http\Middleware\RedirectGuestsToLogin;
 
@@ -13,6 +14,7 @@ Route::prefix('portal')->name('client-portal.')->group(function () {
 
     Route::middleware(RedirectGuestsToLogin::class)->group(function () {
         Route::get('/', [PortalController::class, 'index'])->name('index');
+        Route::get('-/{page}', [ExtensionController::class, 'show'])->where('page', '[a-z0-9-]+')->name('extension');
         Route::get('{portal}', [PortalController::class, 'show'])->name('show');
         Route::post('{portal}/messages', [PortalController::class, 'message'])->middleware('throttle:20,1')->name('message');
         Route::get('{portal}/{module}', [PortalController::class, 'page'])->name('page');

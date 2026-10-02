@@ -22,6 +22,9 @@
             {{ if logged_in }}
                 <nav class="flex items-center gap-5 text-sm text-zinc-600" aria-label="{{ trans key="Account" }}">
                     <a href="{{ route name="client-portal.index" }}" class="hover:text-zinc-900">{{ trans key="All portals" }}</a>
+                    {{ portal_extensions }}
+                        <a href="{{ url }}" class="hover:text-zinc-900">{{ label | sanitize }}</a>
+                    {{ /portal_extensions }}
                     <span class="hidden sm:inline">{{ current_user:name ?? current_user:email | sanitize }}</span>
                     <a href="{{ user:logout_url redirect="/portal/login" }}" class="hover:text-zinc-900">{{ trans key="Log out" }}</a>
                 </nav>

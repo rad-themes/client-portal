@@ -4,13 +4,13 @@ namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
+use PHPUnit\Framework\Attributes\Test;
 use RadThemes\ClientPortal\Notifications\ActivityDigest;
 use RadThemes\ClientPortal\Notifications\ClientActivity;
 use RadThemes\ClientPortal\Notifications\DueDateReminder;
 use RadThemes\ClientPortal\Notifications\NewMessage;
 use RadThemes\ClientPortal\Notifications\PortalUpdated;
 use RadThemes\ClientPortal\Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Other tests fake notifications, so these render each email for real.

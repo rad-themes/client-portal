@@ -2,8 +2,8 @@
 
 namespace RadThemes\ClientPortal\Tests\Feature;
 
-use RadThemes\ClientPortal\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use RadThemes\ClientPortal\Tests\TestCase;
 use Statamic\Testing\Concerns\FakesRoles;
 
 class PortalAccessTest extends TestCase

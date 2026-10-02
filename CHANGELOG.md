@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 — unreleased
+
+- Add-on pages: other addons can add pages to the portal (at `/portal/-/{page}`, linked from the header) with `RadThemes\ClientPortal\Extensions::page()`. [Radpack CRM](https://github.com/rad-themes/radpack-crm) uses this to show clients their invoices, quotes, payments and shared files.
+
 ## 1.0.1 — 2026-09-30
 
 - Fix: on phones, a gallery module could make the portal wider than the screen

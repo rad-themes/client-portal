@@ -127,6 +127,23 @@ Portals live in your default site. Localizations share the origin's clients and 
 - **Views:** copy any view from the addon's `resources/views` into `resources/views/vendor/client-portal` and edit it there.
 - **Reserved URLs:** `/portal/login`, `/portal/register`, `/portal/forgot-password` and `/portal/reset-password`. Don't give a portal one of those slugs.
 
+## Add-on pages
+
+Other addons can add pages to the portal. They live at `/portal/-/{slug}`, need a logged-in user, render inside the portal layout and are linked from the header for the users who can see them:
+
+```php
+use RadThemes\ClientPortal\Extensions;
+
+Extensions::page(
+    'billing',
+    'Billing',
+    fn ($user) => view('my-addon::portal.billing', ['user' => $user])->render(), // escape user data yourself
+    fn ($user) => $user->hasRole('client'), // optional: who sees it
+);
+```
+
+[Radpack CRM](https://github.com/rad-themes/radpack-crm) uses this to show clients their invoices, quotes, payments and shared files.
+
 ## Security notes
 
 - Every portal page, download, upload and completion checks that the user is assigned to the portal.

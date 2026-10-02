@@ -3,11 +3,11 @@
 namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\Attributes\Test;
 use RadThemes\ClientPortal\Actions\ApplyTemplate;
 use RadThemes\ClientPortal\Listeners\SetUpRegisteredClient;
 use RadThemes\ClientPortal\Portals;
 use RadThemes\ClientPortal\Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Statamic\Events\UserRegistered;
 use Statamic\Facades\Entry;
 use Statamic\Testing\Concerns\FakesRoles;

@@ -2,8 +2,10 @@
 
 namespace RadThemes\ClientPortal\Http\Controllers;
 
+use RadThemes\ClientPortal\Extensions;
 use RadThemes\ClientPortal\Portals;
 use Statamic\Facades\Asset;
+use Statamic\Facades\User;
 use Statamic\View\View;
 
 abstract class Controller
@@ -13,7 +15,7 @@ abstract class Controller
      */
     protected function view(string $template, array $data = []): View
     {
-        return View::make("client-portal::{$template}", array_merge(['portal_brand' => $this->branding()], $data))
+        return View::make("client-portal::{$template}", array_merge(['portal_brand' => $this->branding(), 'portal_extensions' => Extensions::navFor(User::current())], $data))
             ->layout('client-portal::layout');
     }
 

@@ -3,13 +3,13 @@
 namespace RadThemes\ClientPortal\Tests\Feature;
 
 use Illuminate\Support\Facades\Notification;
+use PHPUnit\Framework\Attributes\Test;
 use RadThemes\ClientPortal\Actions\NotifyClients;
 use RadThemes\ClientPortal\Activity;
 use RadThemes\ClientPortal\Notifications\ActivityDigest;
 use RadThemes\ClientPortal\Notifications\DueDateReminder;
 use RadThemes\ClientPortal\Notifications\PortalUpdated;
 use RadThemes\ClientPortal\Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 class NotificationsTest extends TestCase
 {
