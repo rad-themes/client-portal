@@ -14,7 +14,7 @@ Give every client a private, branded portal: project status and progress, phases
 
 ## Requirements
 
-- Statamic 6, PHP 8.3+
+- **Statamic 6 Pro**, PHP 8.3+. Every portal needs client user accounts besides yours, and a client role; Statamic Core allows only one user and has no roles.
 - A mail driver, for notifications
 - The Laravel scheduler (`php artisan schedule:run` every minute), for reminders and digests
 

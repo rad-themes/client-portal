@@ -2,7 +2,7 @@
     <div class="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2" tabindex="0" role="region" aria-label="{{ title | sanitize }}">
         {{ images }}
             <a href="{{ url }}" target="_blank" rel="noopener" class="shrink-0 snap-start">
-                <img src="{{ url }}" alt="{{ alt ?? '' | sanitize }}" loading="lazy" class="h-44 w-auto max-w-none rounded-lg object-cover">
+                <img src="{{ url }}" alt="{{ (alt ?? '') | sanitize }}" loading="lazy" class="h-44 w-auto max-w-none rounded-lg object-cover">
             </a>
         {{ /images }}
     </div>

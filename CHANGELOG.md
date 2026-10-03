@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 — 2026-10-03
+
+- Security: escape portal titles and every other plain-text field clients see (project status, phase and module titles, descriptions, button labels, file names, login heading and intro). A visitor who registered with HTML in their name could otherwise run script when staff viewed `/portal`. Thanks to the Statamic Marketplace team for the report.
+- Requirements now state that Statamic Pro is required: portals need client accounts besides yours and a client role, which Statamic Core doesn't allow.
+
 ## 1.1.0 — 2026-10-02
 
 - Add-on pages: other addons can add pages to the portal (at `/portal/-/{page}`, linked from the header) with `RadThemes\ClientPortal\Extensions::page()`. [Radpack CRM](https://github.com/rad-themes/radpack-crm) uses this to show clients their invoices, quotes, payments and shared files.

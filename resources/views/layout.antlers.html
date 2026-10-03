@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>{{ title | strip_tags }} · {{ portal_brand:name }}</title>
+    <title>{{ title | strip_tags | sanitize }} · {{ portal_brand:name }}</title>
     <link rel="stylesheet" href="/vendor/client-portal/portal.css">
     {{ if portal_brand:color }}<style>:root { --portal-brand: {{ portal_brand:color }}; }</style>{{ /if }}
     {{ if portal_brand:custom_css }}<style>{{ portal_brand:custom_css }}</style>{{ /if }}

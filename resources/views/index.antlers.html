@@ -6,9 +6,9 @@
             <li>
                 <a href="{{ route name="client-portal.show" portal="{slug}" }}"
                     class="block rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-brand">
-                    <span class="font-medium">{{ title }}</span>
+                    <span class="font-medium">{{ title | sanitize }}</span>
                     {{ if project_status }}
-                        <span class="mt-2 block text-sm text-zinc-500">{{ project_status }}</span>
+                        <span class="mt-2 block text-sm text-zinc-500">{{ project_status | sanitize }}</span>
                     {{ /if }}
                 </a>
             </li>
