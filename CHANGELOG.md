@@ -7,7 +7,7 @@
 
 ## 1.1.0 — 2026-10-02
 
-- Add-on pages: other addons can add pages to the portal (at `/portal/-/{page}`, linked from the header) with `RadThemes\ClientPortal\Extensions::page()`. [Radpack CRM](https://github.com/rad-themes/radpack-crm) uses this to show clients their invoices, quotes, payments and shared files.
+- Add-on pages: other addons can add pages to the portal (at `/portal/-/{page}`, linked from the header) with `RadThemes\ClientPortal\Extensions::page()`. [Alp CRM](https://github.com/rad-themes/alp-crm) uses this to show clients their invoices, quotes, payments and shared files.
 
 ## 1.0.1 — 2026-09-30
 

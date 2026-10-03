@@ -142,7 +142,7 @@ Extensions::page(
 );
 ```
 
-[Radpack CRM](https://github.com/rad-themes/radpack-crm) uses this to show clients their invoices, quotes, payments and shared files.
+[Alp CRM](https://github.com/rad-themes/alp-crm) uses this to show clients their invoices, quotes, payments and shared files.
 
 ## Security notes
 
